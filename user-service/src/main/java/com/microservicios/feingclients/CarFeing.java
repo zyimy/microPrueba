@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.microservicios.model.Car;
 
-@FeignClient(name = "car-service", url = "http://localhost:8002/v1/car")
+//, url = "http://localhost:8002/v1/car"
+@FeignClient(name = "car-service" , url = "http://localhost:8002/v1/car")
 public interface CarFeing {
 	
 	@PostMapping
