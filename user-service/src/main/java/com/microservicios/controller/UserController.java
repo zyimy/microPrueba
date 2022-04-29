@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,6 +20,8 @@ import com.microservicios.entity.User;
 import com.microservicios.model.Bike;
 import com.microservicios.model.Car;
 import com.microservicios.service.UserService;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 
 
@@ -82,7 +85,7 @@ public class UserController {
 		
 	}
 	
-	
+	@CircuitBreaker(name = "carsCB",fallbackMethod = "fallBackGetCars")
 	@GetMapping("/byUserCars/{userId}")
 	public ResponseEntity<List<Car>>getCarsAll(@PathVariable("userId") int userId){
 		List<Car>listaCars = userService.getCars(userId);
@@ -95,6 +98,7 @@ public class UserController {
 		
 	}
 	
+	@CircuitBreaker(name = "bikesCB",fallbackMethod = "fallBackGetBikes")
 	@GetMapping("/byUserBikes/{userId}")
 	public ResponseEntity<List<Bike>>getBikesAll(@PathVariable("userId") int userId){
 		List<Bike>listaBikes = userService.getBikes(userId);
@@ -108,6 +112,7 @@ public class UserController {
 	}
 	
 	
+	@CircuitBreaker(name = "carsCB",fallbackMethod = "fallBackSaveCars")
 	@PostMapping("/savecar/{userId}")
 	public ResponseEntity<Car>guardarCar(@PathVariable("userId")int userId,  @RequestBody Car car){
 		
@@ -124,6 +129,7 @@ public class UserController {
 	}
 	
 	
+	@CircuitBreaker(name = "bikesCB",fallbackMethod = "fallBackSaveBikes")
 	@PostMapping("/savebike/{userId}")
 	public ResponseEntity<Bike>guardarCar(@PathVariable("userId")int userId,  @RequestBody Bike bike){
 		
@@ -139,7 +145,7 @@ public class UserController {
 
 	}
 	
-	
+	@CircuitBreaker(name = "allCB",fallbackMethod = "fallBackGetAll")
 	@GetMapping("/getAll/{userId}")
 	public ResponseEntity<Map<String,Object>>getAllVehicles(@PathVariable("userId") int userId){
 		Map<String,Object>result = userService.getUsersAndVehicles(userId);
