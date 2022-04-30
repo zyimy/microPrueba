@@ -106,7 +106,7 @@ public class UserController {
 
 	}
 
-	@CircuitBreaker(name = "carsCB", fallbackMethod = "fallBackSaveCars")
+	@CircuitBreaker(name = "carsCB", fallbackMethod = "fallBackSaveCar")
 	@PostMapping("/savecar/{userId}")
 	public ResponseEntity<Car> guardarCar(@PathVariable("userId") int userId, @RequestBody Car car) {
 
@@ -122,7 +122,7 @@ public class UserController {
 
 	}
 
-	@CircuitBreaker(name = "bikesCB", fallbackMethod = "fallBackSaveBikes")
+	@CircuitBreaker(name = "bikesCB", fallbackMethod = "fallBackSaveBike")
 	@PostMapping("/savebike/{userId}")
 	public ResponseEntity<Bike> guardarCar(@PathVariable("userId") int userId, @RequestBody Bike bike) {
 
@@ -154,7 +154,7 @@ public class UserController {
 
 	}
 
-	private ResponseEntity<Car> fallBackSaveCars(@PathVariable("userId") int userId, @RequestBody Car car,
+	private ResponseEntity<Car> fallBackSaveCar(@PathVariable("userId") int userId, @RequestBody Car car,
 			RuntimeException e) {
 
 		return new ResponseEntity("El usuario" + userId + " No  tiene dinero para coches", HttpStatus.OK);
@@ -167,7 +167,7 @@ public class UserController {
 
 	}
 
-	private ResponseEntity<Bike> fallBackSaveBikes(@PathVariable("userId") int userId, @RequestBody 	Bike bike,
+	private ResponseEntity<Bike> fallBackSaveBike(@PathVariable("userId") int userId, @RequestBody 	Bike bike,
 			RuntimeException e) {
 
 		return new ResponseEntity("El usuario" + userId + " No  tiene dinero para motos", HttpStatus.OK);
@@ -178,5 +178,7 @@ public class UserController {
 		return new ResponseEntity("El usuario" + userId + " tiene los vehiculos en el taller", HttpStatus.OK);
 
 	}
+	
+	
 
 }
